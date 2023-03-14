@@ -43,3 +43,8 @@ class LoginSerializer(serializers.Serializer):
                 return data
         else:
             raise serializers.ValidationError('존재하지 않는 사용자입니다.')
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'nickname', 'is_booth', 'is_tf']
