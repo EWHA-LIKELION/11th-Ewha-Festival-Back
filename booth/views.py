@@ -101,3 +101,17 @@ class MenuDetailView(views.APIView):
             return Response({'message': '메뉴 정보 수정 성공', 'data': serializer.data}, status=HTTP_200_OK)
         else:
             return Response({'message': '메뉴 정보 수정 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        user = request.user
+        booth = get_object_or_404(Booth, pk=pk)
+        booth.like.remove(user)
+        booth.is_liked=False
+
+        serializer = self.serializer_class(data=request.data, instance=booth, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': '부스 좋아요 취소 성공', 'data': {'booth': serializer.data['id'], 'is_liked': serializer.data['is_liked']}}, status=HTTP_200_OK)
+        else:
+            return Response({'message': '부스 좋아요 취소 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
