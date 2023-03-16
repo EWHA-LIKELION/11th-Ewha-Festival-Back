@@ -11,7 +11,7 @@ from rest_framework.response import Response
 
 from .models import *
 from .serializers import *
-from .permissions import IsAuthorOrReadOnly
+from .permissions import IsAuthorOrReadOnly, IsAuthenticatedOrReadOnly
 
 
 class BoothListView(views.APIView):
@@ -115,3 +115,18 @@ class MenuDetailView(views.APIView):
             return Response({'message': '부스 좋아요 취소 성공', 'data': {'booth': serializer.data['id'], 'is_liked': serializer.data['is_liked']}}, status=HTTP_200_OK)
         else:
             return Response({'message': '부스 좋아요 취소 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
+
+class CommentView(views.APIView):
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def post(self, request, pk):
+        booth = get_object_or_404(Booth, pk=pk)
+        serializer = self.serializer_class(data=request.data)
+        
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(user=request.user, booth=booth)
+            return Response({'message': '댓글 작성 성공', 'data': serializer.data}, status=HTTP_200_OK)
+        else:
+            return Response({'message': '댓글 작성 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
+    
