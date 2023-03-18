@@ -143,3 +143,21 @@ class CommentDetailView(views.APIView):
         comment.delete()
         
         return Response({'message': '댓글 삭제 성공'}, status=HTTP_204_NO_CONTENT)
+
+class SearchView(views.APIView):
+    serializer_class = BoothListSerializer
+
+    def get(self, request):
+        user = request.user
+        keyword= request.GET.get('keyword')
+
+        booths = (Booth.objects.filter(name__icontains=keyword) | Booth.objects.filter(menus__menu__contains=keyword)).distinct()
+
+        if user:
+            for booth in booths:
+                if booth.like.filter(pk=user.id).exists():
+                    booth.is_liked=True
+
+        serializer = self.serializer_class(booths, many=True)
+
+        return Response({'message':'부스 검색 성공', 'data': serializer.data}, status=HTTP_200_OK)
