@@ -20,3 +20,9 @@ class NoticeListView(views.APIView):
             return Response({'message': 'TF 공지 작성 성공', 'data': serializer.data}, status=HTTP_200_OK)
         else:
             return Response({'message': 'TF 공지 작성 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
+    
+    def get(self, request):
+        notices = Notice.objects.all().order_by('-created_at')
+        serializer = self.serializer_class(notices, many=True)
+        
+        return Response({'message': 'TF 공지 목록 조회 성공', 'data': serializer.data})
