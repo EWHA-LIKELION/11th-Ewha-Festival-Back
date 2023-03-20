@@ -52,3 +52,9 @@ class NoticeDetailView(views.APIView):
             serializer.save()
             return Response({'message' : 'TF 공지 수정 성공', 'data': serializer.data}, status = HTTP_200_OK)
         return Response({'message': 'TF 공지 수정 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        notice = self.get_object(pk=pk)
+        notice.delete()
+
+        return Response({'message': 'TF 공지 삭제 성공'}, status=HTTP_204_NO_CONTENT)
