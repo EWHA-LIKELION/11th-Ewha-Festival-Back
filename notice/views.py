@@ -26,3 +26,20 @@ class NoticeListView(views.APIView):
         serializer = self.serializer_class(notices, many=True)
         
         return Response({'message': 'TF 공지 목록 조회 성공', 'data': serializer.data})
+
+
+class NoticeDetailView(views.APIView):
+    serializer_class = NoticeSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, IsTFOrReadOnly]
+
+    def get_object(self, pk):
+        notice = get_object_or_404(Notice, pk=pk)
+        self.check_object_permissions(self.request, notice)
+
+        return notice
+
+    def get(self, request, pk):
+        notice = self.get_object(pk=pk)
+        serializer = self.serializer_class(notice)
+
+        return Response({'message': 'TF 공지 상세 조회 성공', 'data': serializer.data})
