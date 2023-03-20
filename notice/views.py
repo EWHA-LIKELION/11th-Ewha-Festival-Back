@@ -43,3 +43,12 @@ class NoticeDetailView(views.APIView):
         serializer = self.serializer_class(notice)
 
         return Response({'message': 'TF 공지 상세 조회 성공', 'data': serializer.data})
+    
+    def put(self, request, pk):
+        notice = self.get_object(pk=pk)
+        serializer = self.serializer_class(data=request.data, instance=notice)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message' : 'TF 공지 수정 성공', 'data': serializer.data}, status = HTTP_200_OK)
+        return Response({'message': 'TF 공지 수정 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
