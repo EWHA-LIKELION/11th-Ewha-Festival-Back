@@ -9,14 +9,19 @@ from rest_framework import views
 from rest_framework.status import *
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 
 from .models import *
 from .serializers import *
 from .permissions import IsAuthorOrReadOnly
+from .pagination import PaginationHandlerMixin
 
+class BoothPagination(PageNumberPagination):
+    page_size = 10
 
-class BoothListView(views.APIView):
+class BoothListView(views.APIView, PaginationHandlerMixin):
     serializer_class = BoothListSerializer
+    pagination_class = BoothPagination
 
     def get(self, request):
         user = request.user
