@@ -7,11 +7,12 @@ from django.db.models.functions import Cast, Substr
 
 from rest_framework import views
 from rest_framework.status import *
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 
 from .models import *
 from .serializers import *
-from .permissions import IsAuthorOrReadOnly, IsAuthenticatedOrReadOnly
+from .permissions import IsAuthorOrReadOnly
 
 
 class BoothListView(views.APIView):
