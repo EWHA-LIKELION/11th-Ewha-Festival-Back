@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'account',
     'booth',
     'notice',
+    'health_check', 
 ]
 
 REST_FRAMEWORK = {
@@ -72,7 +73,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://ewha2023.com',
+    'https://rewha2022.com',
 ]
 
 MIDDLEWARE = [
@@ -152,9 +153,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-"""
+
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
 AWS_REGION = 'ap-northeast-2'
 AWS_STORAGE_BUCKET_NAME = env('S3_BUCKET_NAME')
-"""
