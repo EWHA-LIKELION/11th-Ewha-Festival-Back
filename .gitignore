@@ -31,6 +31,7 @@ dist/
 downloads/
 eggs/
 .eggs/
+newvenv/
 lib/
 lib64/
 parts/
