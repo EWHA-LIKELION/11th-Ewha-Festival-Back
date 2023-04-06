@@ -1,7 +1,7 @@
 """festival URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.1/topics/http/urls/
+    https://docs.djangoproject.com/en/4.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('account/', include('account.urls')),
-    path('booth/', include('booth.urls')),
-    path('notice/', include('notice.urls')),
+    path('accounts/', include('account.urls')),
+    path('booths/', include('booth.urls')),
+    path('notices/', include('notice.urls')),
+    url(r'^health/', include('health_check.urls')),
 ]

@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import User
 from rest_framework_simplejwt.tokens import RefreshToken
+from .models import User
 
 
 class SignUpSerializer(serializers.ModelSerializer):
@@ -16,6 +16,7 @@ class SignUpSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=64)
@@ -43,6 +44,7 @@ class LoginSerializer(serializers.Serializer):
                 return data
         else:
             raise serializers.ValidationError('존재하지 않는 사용자입니다.')
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:

@@ -13,6 +13,12 @@ class NoticeListView(views.APIView):
     serializer_class = NoticeSerializer
     permission_classes = [IsTFOrReadOnly]
 
+    def get(self, request):
+        notices = Notice.objects.all().order_by('-created_at')
+        serializer = self.serializer_class(notices, many=True)
+        
+        return Response({'message': 'TF 공지 목록 조회 성공', 'data': serializer.data})
+
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -20,12 +26,6 @@ class NoticeListView(views.APIView):
             return Response({'message': 'TF 공지 작성 성공', 'data': serializer.data}, status=HTTP_200_OK)
         else:
             return Response({'message': 'TF 공지 작성 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
-    
-    def get(self, request):
-        notices = Notice.objects.all().order_by('-created_at')
-        serializer = self.serializer_class(notices, many=True)
-        
-        return Response({'message': 'TF 공지 목록 조회 성공', 'data': serializer.data})
 
 
 class NoticeDetailView(views.APIView):
@@ -43,7 +43,7 @@ class NoticeDetailView(views.APIView):
         serializer = self.serializer_class(notice)
 
         return Response({'message': 'TF 공지 상세 조회 성공', 'data': serializer.data})
-    
+
     def put(self, request, pk):
         notice = self.get_object(pk=pk)
         serializer = self.serializer_class(data=request.data, instance=notice)
@@ -58,3 +58,4 @@ class NoticeDetailView(views.APIView):
         notice.delete()
 
         return Response({'message': 'TF 공지 삭제 성공'}, status=HTTP_204_NO_CONTENT)
+    
