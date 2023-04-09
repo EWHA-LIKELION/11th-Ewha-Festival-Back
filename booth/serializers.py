@@ -3,6 +3,13 @@ from rest_framework import serializers
 from .models import Booth, Menu, Image, Comment
 from account.models import User
 
+
+class MenuSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Menu
+        fields = ['id', 'menu', 'price', 'is_soldout']
+
+
 class BoothListSerializer(serializers.ModelSerializer):
     day = serializers.StringRelatedField(many=True, read_only=True)
     is_liked = serializers.BooleanField(default=False)
@@ -12,10 +19,6 @@ class BoothListSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'day', 'college', 'name', 'number', 'thumnail', 'open', 'notice', 'is_liked', 'created_at', 'updated_at']
         read_only_fields= ('thumnail', )
 
-class MenuSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Menu
-        fields = ['id', 'menu', 'price', 'is_soldout']
 
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,6 +39,7 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['id', 'booth', 'user', 'content', 'created_at', 'updated_at']
         read_only_fields= ('booth', 'user', )
+
 
 class BoothDetailSerializer(serializers.ModelSerializer):
     day = serializers.StringRelatedField(many=True, read_only=True)

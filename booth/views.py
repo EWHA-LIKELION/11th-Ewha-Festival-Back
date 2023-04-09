@@ -1,3 +1,4 @@
+import boto3
 import uuid
 import math
 
@@ -7,8 +8,8 @@ from django.db.models.functions import Cast, Substr
 
 from rest_framework import views
 from rest_framework.status import *
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 
 from .models import *
@@ -16,12 +17,14 @@ from .serializers import *
 from .permissions import IsAuthorOrReadOnly
 from .pagination import PaginationHandlerMixin
 
+
 class BoothPagination(PageNumberPagination):
     page_size = 10
 
+
 class BoothListView(views.APIView, PaginationHandlerMixin):
-    serializer_class = BoothListSerializer
     pagination_class = BoothPagination
+    serializer_class = BoothListSerializer
 
     def get(self, request):
         user = request.user
@@ -49,7 +52,8 @@ class BoothListView(views.APIView, PaginationHandlerMixin):
         
         serializer = self.serializer_class(booths, many=True)
         return Response({'message': '부스 목록 조회 성공', 'total': total, 'total_page' : total_page, 'data': serializer.data}, status=HTTP_200_OK)
-    
+
+
 class BoothDetailView(views.APIView):
     serializer_class = BoothDetailSerializer
     permission_classes = [IsAuthorOrReadOnly]
@@ -80,6 +84,7 @@ class BoothDetailView(views.APIView):
         else:
             return Response({'message': '부스 정보 수정 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
 
+
 class MenuListView(views.APIView):
     serializer_class = MenuSerializer
 
@@ -88,6 +93,7 @@ class MenuListView(views.APIView):
         serializer = self.serializer_class(menus, many=True)
             
         return Response({'message': '메뉴 목록 조회 성공', 'data': serializer.data}, status=HTTP_200_OK)
+
 
 class MenuDetailView(views.APIView):
     serializer_class = MenuSerializer
@@ -107,6 +113,25 @@ class MenuDetailView(views.APIView):
             return Response({'message': '메뉴 정보 수정 성공', 'data': serializer.data}, status=HTTP_200_OK)
         else:
             return Response({'message': '메뉴 정보 수정 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
+
+
+class LikeView(views.APIView):
+    serializer_class = BoothDetailSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        user = request.user
+        booth = get_object_or_404(Booth, pk=pk)
+        booth.like.add(user)
+        booth.is_liked=True
+
+        serializer = self.serializer_class(data=request.data, instance=booth, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': '부스 좋아요 성공', 'data': {'booth': serializer.data['id'], 'is_liked': serializer.data['is_liked']}}, status=HTTP_200_OK)
+        else:
+            return Response({'message': '부스 좋아요 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk):
         user = request.user
@@ -122,33 +147,6 @@ class MenuDetailView(views.APIView):
         else:
             return Response({'message': '부스 좋아요 취소 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
 
-class CommentView(views.APIView):
-    serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
-    def post(self, request, pk):
-        booth = get_object_or_404(Booth, pk=pk)
-        serializer = self.serializer_class(data=request.data)
-        
-        if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user, booth=booth)
-            return Response({'message': '댓글 작성 성공', 'data': serializer.data}, status=HTTP_200_OK)
-        else:
-            return Response({'message': '댓글 작성 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
-
-class CommentDetailView(views.APIView): 
-    permission_classes = [IsAuthorOrReadOnly]
-
-    def get_object(self, pk):
-        comment = get_object_or_404(Comment, pk=pk)
-        self.check_object_permissions(self.request, comment)
-        return comment
-
-    def delete(self, request, pk, comment_pk):
-        comment = self.get_object(pk=comment_pk)
-        comment.delete()
-        
-        return Response({'message': '댓글 삭제 성공'}, status=HTTP_204_NO_CONTENT)
 
 class SearchView(views.APIView):
     serializer_class = BoothListSerializer
@@ -167,3 +165,35 @@ class SearchView(views.APIView):
         serializer = self.serializer_class(booths, many=True)
 
         return Response({'message':'부스 검색 성공', 'data': serializer.data}, status=HTTP_200_OK)
+
+
+class CommentView(views.APIView):
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def post(self, request, pk):
+        booth = get_object_or_404(Booth, pk=pk)
+        serializer = self.serializer_class(data=request.data)
+        
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(user=request.user, booth=booth)
+            return Response({'message': '댓글 작성 성공', 'data': serializer.data}, status=HTTP_200_OK)
+        else:
+            return Response({'message': '댓글 작성 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
+    
+
+class CommentDetailView(views.APIView): 
+    permission_classes = [IsAuthorOrReadOnly]
+
+    def get_object(self, pk):
+        comment = get_object_or_404(Comment, pk=pk)
+        self.check_object_permissions(self.request, comment)
+        return comment
+
+    def delete(self, request, pk, comment_pk):
+        comment = self.get_object(pk=comment_pk)
+        comment.delete()
+        
+        return Response({'message': '댓글 삭제 성공'}, status=HTTP_204_NO_CONTENT)
+
+    
