@@ -31,8 +31,9 @@ class BoothListView(views.APIView, PaginationHandlerMixin):
         
         day = request.GET.get('day')
         college = request.GET.get('college')
+        category = request.GET.get('category')
 
-        params = {'day': day, 'college': college}
+        params = {'day': day, 'college': college, 'category': category}
         arguments = {}
         for key, value in params.items():
             if value:

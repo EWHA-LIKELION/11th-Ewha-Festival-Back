@@ -60,7 +60,10 @@ class LikedListView(views.APIView):
 
     def get(self, request):
         user = request.user
-        booths = Booth.objects.filter(like=user.id)
+        keyword= request.GET.get('keyword')
+        
+        booths = (Booth.objects.filter(like=user.id) & (Booth.objects.filter(category__icontains=keyword) | 
+                           Booth.objects.filter(day__day__icontains=keyword) | Booth.objects.filter(college__icontains=keyword))).distinct()
 
         for booth in booths:
             booth.is_liked=True
