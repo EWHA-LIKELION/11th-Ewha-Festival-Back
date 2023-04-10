@@ -155,7 +155,8 @@ class SearchView(views.APIView):
         user = request.user
         keyword= request.GET.get('keyword')
 
-        booths = (Booth.objects.filter(name__icontains=keyword) | Booth.objects.filter(menus__menu__contains=keyword)).distinct()
+        booths = (Booth.objects.filter(name__icontains=keyword) | Booth.objects.filter(menus__menu__contains=keyword)
+                  | Booth.objects.filter(category__icontains=keyword)).distinct()
 
         if user:
             for booth in booths:
