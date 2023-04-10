@@ -48,6 +48,7 @@ class Booth(TimeStamp):
     number = models.CharField(max_length=10, blank=True)
     thumnail = models.TextField(null=True, blank=True)
     open = models.BooleanField(default=False)
+    hashtag = models.TextField(null=True, blank=True)
     notice = models.TextField(blank=True)
     description = models.TextField(blank=True)
     like = models.ManyToManyField(User, related_name='booths', blank=True)
