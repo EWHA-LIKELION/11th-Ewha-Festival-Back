@@ -31,9 +31,8 @@ class BoothListView(views.APIView, PaginationHandlerMixin):
         
         day = request.GET.get('day')
         college = request.GET.get('college')
-        category = request.GET.get('category')
 
-        params = {'day': day, 'college': college, 'category': category}
+        params = {'day': day, 'college': college}
         arguments = {}
         for key, value in params.items():
             if value:
@@ -156,8 +155,7 @@ class SearchView(views.APIView):
         user = request.user
         keyword= request.GET.get('keyword')
 
-        booths = (Booth.objects.filter(name__icontains=keyword) | Booth.objects.filter(menus__menu__contains=keyword)
-                  | Booth.objects.filter(category__icontains=keyword) | Booth.objects.filter(college__contains=keyword)).distinct()
+        booths = (Booth.objects.filter(name__icontains=keyword) | Booth.objects.filter(menus__menu__contains=keyword)).distinct()
 
         if user:
             for booth in booths:
@@ -197,5 +195,3 @@ class CommentDetailView(views.APIView):
         comment.delete()
         
         return Response({'message': '댓글 삭제 성공'}, status=HTTP_204_NO_CONTENT)
-
-    
