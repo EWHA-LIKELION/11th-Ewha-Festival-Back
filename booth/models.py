@@ -39,11 +39,18 @@ class Booth(TimeStamp):
         ('포스코관', '포스코관'),
         ('학문관', '학문관'),
         ('후윳길', '후윳길')
+    ),
+    CATEGORY_CHOICES = (
+        ('음식', '음식'),
+        ('굿즈', '굿즈'),
+        ('체험', '체험'),
+        ('기타', '기타')
     )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     day = models.ManyToManyField(Day, related_name='booths')
     college = models.CharField(choices=COLLEGE_CHOICES, max_length=20)
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=20)
     name = models.TextField()
     number = models.CharField(max_length=10, blank=True)
     thumnail = models.TextField(null=True, blank=True)

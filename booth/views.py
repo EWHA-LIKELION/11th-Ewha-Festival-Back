@@ -31,8 +31,9 @@ class BoothListView(views.APIView, PaginationHandlerMixin):
         
         day = request.GET.get('day')
         college = request.GET.get('college')
+        category = request.GET.get('category')
 
-        params = {'day': day, 'college': college}
+        params = {'day': day, 'college': college, 'category': category}
         arguments = {}
         for key, value in params.items():
             if value:
@@ -155,7 +156,7 @@ class SearchView(views.APIView):
         user = request.user
         keyword= request.GET.get('keyword')
 
-        booths = (Booth.objects.filter(name__icontains=keyword) | Booth.objects.filter(menus__menu__contains=keyword)).distinct()
+        booths = (Booth.objects.filter(name__icontains=keyword) | Booth.objects.filter(menus__menu__contains=keyword) | Booth.objects.filter(category__icontains=keyword)).distinct()
 
         if user:
             for booth in booths:
