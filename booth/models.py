@@ -17,9 +17,9 @@ class Day(models.Model):
         ('금요일', '금요일'),
     )
     DATE_CHOICES = (
-        (14, 14),
-        (15, 15),
-        (16, 16),
+        (10, 10),
+        (11, 11),
+        (12, 12),
     )
 
     day = models.CharField(choices=DAY_CHOICES, max_length=5)
@@ -55,6 +55,7 @@ class Booth(TimeStamp):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     day = models.ManyToManyField(Day, related_name='booths')
+    time = models.TextField(default="10:00 ~ 17:00", null = True, blank = True)
     college = models.CharField(choices=COLLEGE_CHOICES, max_length=20)
     category = models.ManyToManyField(Category, related_name='booths')
     name = models.TextField()

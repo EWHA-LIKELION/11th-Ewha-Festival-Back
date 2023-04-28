@@ -16,6 +16,7 @@ class BoothListSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Booth
+
         fields = ['id', 'user', 'day', 'college', 'category', 'name', 'number', 'thumnail', 'opened', 'time', 'hashtag','notice', 'is_liked', 'created_at', 'updated_at']
         read_only_fields= ('thumnail', )
 
