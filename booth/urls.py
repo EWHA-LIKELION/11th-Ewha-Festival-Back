@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:pk>/likes/', LikeView.as_view()),
     path('<int:pk>/comments/', CommentView.as_view()),
     path('<int:pk>/comments/<int:comment_pk>/', CommentDetailView.as_view()),
+    path('<int:pk>/notices/<int:notice_pk>/', NoticeDetailView.as_view()),
 ]
