@@ -8,7 +8,7 @@ class MenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menu
         fields = ['id', 'menu', 'price', 'is_soldout']
-        
+
 class NoticeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notice
@@ -17,6 +17,7 @@ class NoticeSerializer(serializers.ModelSerializer):
 class BoothListSerializer(serializers.ModelSerializer):
     day = serializers.StringRelatedField(many=True, read_only=True)
     is_liked = serializers.BooleanField(default=False)
+    category = serializers.StringRelatedField(many=True, read_only=True)
     notice = NoticeSerializer(many=True)
     
     class Meta:
@@ -49,6 +50,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class BoothDetailSerializer(serializers.ModelSerializer):
     day = serializers.StringRelatedField(many=True, read_only=True)
+    category = serializers.StringRelatedField(many=True, read_only=True)
     menus = MenuSerializer(read_only=True, many=True)
     images = ImageSerializer(read_only=True, many=True)
     is_liked = serializers.BooleanField(default=False)

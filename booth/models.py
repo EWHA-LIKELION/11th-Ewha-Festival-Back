@@ -35,14 +35,8 @@ class Category(models.Model):
         ('체험', '체험'),
         ('기타', '기타'),
     )
-    DATE_CHOICES = (
-        (10, 10),
-        (11, 11),
-        (12, 12),
-    )
 
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=5)
-    date = models.IntegerField(choices=DATE_CHOICES, null=True)
 
     def __str__(self):
         return f'{self.category}'
