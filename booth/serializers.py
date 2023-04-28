@@ -16,7 +16,8 @@ class BoothListSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Booth
-        fields = ['id', 'user', 'day', 'time', 'college', 'category', 'name', 'number', 'thumnail', 'opened', 'hashtag','notice', 'is_liked', 'created_at', 'updated_at']
+
+        fields = ['id', 'user', 'day', 'college', 'category', 'name', 'number', 'thumnail', 'opened', 'time', 'hashtag','notice', 'is_liked', 'created_at', 'updated_at']
         read_only_fields= ('thumnail', )
 
 
@@ -50,4 +51,4 @@ class BoothDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Booth
-        fields = ['id', 'user', 'day', 'time', 'college', 'category', 'name', 'number', 'thumnail', 'opened', 'hashtag', 'notice', 'description', 'images', 'menus', 'is_liked', 'created_at', 'updated_at', 'comments']
+        fields = ['id', 'user', 'day', 'college', 'category', 'name', 'number', 'thumnail', 'opened', 'time', 'hashtag', 'notice', 'description', 'images', 'menus', 'is_liked', 'created_at', 'updated_at', 'comments']
