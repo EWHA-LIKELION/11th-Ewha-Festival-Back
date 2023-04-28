@@ -71,7 +71,6 @@ class Booth(TimeStamp):
     opened = models.BooleanField(default=False)
     time = models.TextField(default='10:00 ~ 17:00')
     hashtag = models.TextField(null=True, blank=True)
-    notice = models.TextField(blank=True)
     description = models.TextField(blank=True)
     like = models.ManyToManyField(User, related_name='booths', blank=True)
 
@@ -96,3 +95,6 @@ class Comment(TimeStamp):
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
 
+class Notice(TimeStamp):
+    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, related_name='notices')
+    content = models.TextField()

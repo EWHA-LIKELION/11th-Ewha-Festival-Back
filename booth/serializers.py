@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Booth, Menu, Image, Comment
+from .models import Booth, Menu, Image, Comment, Notice
 from account.models import User
 
 
@@ -8,16 +8,21 @@ class MenuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Menu
         fields = ['id', 'menu', 'price', 'is_soldout']
-
+        
+class NoticeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notice
+        fields = ['id', 'created_at', 'updated_at', 'content']
 
 class BoothListSerializer(serializers.ModelSerializer):
     day = serializers.StringRelatedField(many=True, read_only=True)
     is_liked = serializers.BooleanField(default=False)
+    notice = NoticeSerializer(many=True)
     
     class Meta:
         model = Booth
 
-        fields = ['id', 'user', 'day', 'college', 'category', 'name', 'number', 'thumnail', 'opened', 'time', 'hashtag','notice', 'is_liked', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'day', 'college', 'category', 'name', 'number', 'thumnail', 'opened', 'time', 'notice', 'hashtag', 'is_liked', 'created_at', 'updated_at']
         read_only_fields= ('thumnail', )
 
 
@@ -48,6 +53,7 @@ class BoothDetailSerializer(serializers.ModelSerializer):
     images = ImageSerializer(read_only=True, many=True)
     is_liked = serializers.BooleanField(default=False)
     comments = CommentSerializer(many=True, read_only=True)
+    notice = NoticeSerializer(many=True)
 
     class Meta:
         model = Booth
