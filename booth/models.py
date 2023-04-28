@@ -28,6 +28,18 @@ class Day(models.Model):
     def __str__(self):
         return f'{self.day}'
 
+class Category(models.Model):
+    CATEGORY_CHOICES = (
+        ('음식', '음식'),
+        ('굿즈', '굿즈'),
+        ('체험', '체험'),
+        ('기타', '기타'),
+    )
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=5)
+
+    def __str__(self):
+        return f'{self.category}'
+
 
 class Booth(TimeStamp):
     COLLEGE_CHOICES = (
@@ -40,21 +52,16 @@ class Booth(TimeStamp):
         ('학문관', '학문관'),
         ('후윳길', '후윳길')
     )
-    CATEGORY_CHOICES = (
-        ('음식', '음식'),
-        ('굿즈', '굿즈'),
-        ('체험', '체험'),
-        ('기타', '기타')
-    )
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     day = models.ManyToManyField(Day, related_name='booths')
     college = models.CharField(choices=COLLEGE_CHOICES, max_length=20)
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=20, default='음식')
+    category = models.ManyToManyField(Category, related_name='booths')
     name = models.TextField()
     number = models.CharField(max_length=10, blank=True)
     thumnail = models.TextField(null=True, blank=True)
     opened = models.BooleanField(default=False)
+    time = models.TextField(default='10:00 ~ 17:00')
     hashtag = models.TextField(null=True, blank=True)
     notice = models.TextField(blank=True)
     description = models.TextField(blank=True)
