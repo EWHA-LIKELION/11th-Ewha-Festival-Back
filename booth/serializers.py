@@ -62,4 +62,4 @@ class BoothDetailSerializer(serializers.ModelSerializer):
         model = Booth
         fields = ['id', 'user', 'day', 'college', 'category', 'name', 
                   'number', 'thumnail', 'opened', 'time', 'hashtag', 
-                  'description', 'images', 'menus', 'is_liked', 'created_at', 'updated_at', 'comments' 'notices']
+                  'description', 'images', 'menus', 'is_liked', 'created_at', 'updated_at', 'comments', 'notices']
