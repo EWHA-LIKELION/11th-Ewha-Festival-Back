@@ -63,7 +63,7 @@ class BoothDetailSerializer(serializers.ModelSerializer):
     is_liked = serializers.BooleanField(default=False)
     comments = CommentSerializer(many=True, read_only=True)
     notices = NoticeSerializer(many=True, read_only=True)
-    timess = TimeSerializer(many=True, read_only = True)
+    times = TimeSerializer(many=True, read_only = True)
 
     class Meta:
         model = Booth
