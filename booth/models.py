@@ -92,5 +92,5 @@ class Notice(TimeStamp):
     content = models.TextField()
 
 class Time(TimeStamp):
-    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, related_name='notices')
+    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, related_name='times')
     time = models.TextField()
