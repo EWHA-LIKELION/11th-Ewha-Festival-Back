@@ -1,7 +1,7 @@
 import boto3
 import uuid
 
-from festival.settings.base import S3_ACCESS_KEY, S3_SECRET_KEY, S3_BUCKET
+from festival.settings.base import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME
 
 class FileUpload:
     def __init__(self, client):
@@ -39,4 +39,4 @@ class MyS3Client:
 
 
 # MyS3Client instance
-s3_client = MyS3Client(S3_ACCESS_KEY, S3_SECRET_KEY, S3_BUCKET)
+s3_client = MyS3Client(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME)
