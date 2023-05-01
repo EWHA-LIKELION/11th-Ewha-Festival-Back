@@ -14,5 +14,6 @@ urlpatterns = [
     path('<int:pk>/comments/<int:comment_pk>/', CommentDetailView.as_view()),
     path('<int:pk>/notices/<int:notice_pk>/', NoticeDetailView.as_view()),
     path('<int:pk>/images/', BoothImageView.as_view()),
-    path('<int:pk>/thumnail/', BoothThumnailView.as_view())
+    path('<int:pk>/thumnail/', BoothThumnailView.as_view()),
+    path('<int:pk>/times/<int:time_pk>/', TimeDetailView.as_view())
 ]

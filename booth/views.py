@@ -248,3 +248,22 @@ class BoothImageView(views.APIView):
                 image = file_url
             )
         return Response({"message" : "이미지 업로드 성공"}, status=HTTP_200_OK)
+    
+class TimeDetailView(views.APIView):
+    serializer_class = TimeSerializer
+    permission_classes = [IsAuthorOrReadOnly]
+
+    def get_object(self, pk):
+        time = get_object_or_404(Time, pk=pk)
+        self.check_object_permissions(self.request, time.booth)
+        return time
+
+    def patch(self, request, pk, time_pk):
+        time = self.get_object(pk=time_pk)
+        serializer = self.serializer_class(data=request.data, instance=time, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': '영업시간 수정 성공', 'data': serializer.data}, status=HTTP_200_OK)
+        else:
+            return Response({'message': '영업시간 수정 실패', 'data': serializer.errors}, status=HTTP_400_BAD_REQUEST)
