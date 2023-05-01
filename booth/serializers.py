@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Booth, Menu, Image, Comment, Notice
+from .models import Booth, Menu, Image, Comment, Notice, Time
 from account.models import User
 
 
@@ -14,17 +14,23 @@ class NoticeSerializer(serializers.ModelSerializer):
         model = Notice
         fields = ['id', 'created_at', 'updated_at', 'content']
 
+class TimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Time
+        fields = ['id', 'created_at', 'updated_at', 'time']
+
 class BoothListSerializer(serializers.ModelSerializer):
     day = serializers.StringRelatedField(many=True, read_only=True)
     is_liked = serializers.BooleanField(default=False)
     category = serializers.StringRelatedField(many=True, read_only=True)
     notices = NoticeSerializer(many=True, read_only = True)
+    times = TimeSerializer(many=True, read_only = True)
     
     class Meta:
         model = Booth
 
         fields = ['id', 'user', 'day', 'college', 'category', 'name', 'number', 'thumnail', 
-                  'opened', 'time', 'hashtag', 'is_liked', 'created_at', 'updated_at', 'notices']
+                  'opened', 'times', 'hashtag', 'is_liked', 'created_at', 'updated_at', 'notices']
         read_only_fields= ('thumnail', )
 
 
@@ -57,9 +63,10 @@ class BoothDetailSerializer(serializers.ModelSerializer):
     is_liked = serializers.BooleanField(default=False)
     comments = CommentSerializer(many=True, read_only=True)
     notices = NoticeSerializer(many=True, read_only=True)
+    timess = TimeSerializer(many=True, read_only = True)
 
     class Meta:
         model = Booth
         fields = ['id', 'user', 'day', 'college', 'category', 'name', 
-                  'number', 'thumnail', 'opened', 'time', 'hashtag', 
+                  'number', 'thumnail', 'opened', 'times', 'hashtag', 
                   'description', 'images', 'menus', 'is_liked', 'created_at', 'updated_at', 'comments', 'notices']

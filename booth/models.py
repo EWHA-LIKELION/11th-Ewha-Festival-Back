@@ -56,7 +56,6 @@ class Booth(TimeStamp):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     day = models.ManyToManyField(Day, related_name='booths')
-    time = models.TextField(default="10:00 ~ 17:00", null = True, blank = True)
     college = models.CharField(choices=COLLEGE_CHOICES, max_length=20)
     category = models.ManyToManyField(Category, related_name='booths')
     name = models.TextField()
@@ -91,3 +90,7 @@ class Comment(TimeStamp):
 class Notice(TimeStamp):
     booth = models.ForeignKey(Booth, on_delete=models.CASCADE, related_name='notices')
     content = models.TextField()
+
+class Time(TimeStamp):
+    booth = models.ForeignKey(Booth, on_delete=models.CASCADE, related_name='notices')
+    time = models.TextField()
