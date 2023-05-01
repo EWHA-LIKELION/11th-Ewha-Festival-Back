@@ -9,16 +9,22 @@ class MenuSerializer(serializers.ModelSerializer):
         model = Menu
         fields = ['id', 'menu', 'price', 'is_soldout']
 
+class NoticeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notice
+        fields = ['id', 'created_at', 'updated_at', 'content']
+
 class BoothListSerializer(serializers.ModelSerializer):
     day = serializers.StringRelatedField(many=True, read_only=True)
     is_liked = serializers.BooleanField(default=False)
     category = serializers.StringRelatedField(many=True, read_only=True)
+    notices = NoticeSerializer(many=True, read_only = True)
     
     class Meta:
         model = Booth
 
         fields = ['id', 'user', 'day', 'college', 'category', 'name', 'number', 'thumnail', 
-                  'opened', 'time', 'hashtag', 'is_liked', 'created_at', 'updated_at']
+                  'opened', 'time', 'hashtag', 'is_liked', 'created_at', 'updated_at', 'notices']
         read_only_fields= ('thumnail', )
 
 
@@ -50,9 +56,10 @@ class BoothDetailSerializer(serializers.ModelSerializer):
     images = ImageSerializer(read_only=True, many=True)
     is_liked = serializers.BooleanField(default=False)
     comments = CommentSerializer(many=True, read_only=True)
+    notices = NoticeSerializer(many=True, read_only=True)
 
     class Meta:
         model = Booth
         fields = ['id', 'user', 'day', 'college', 'category', 'name', 
                   'number', 'thumnail', 'opened', 'time', 'hashtag', 
-                  'description', 'images', 'menus', 'is_liked', 'created_at', 'updated_at', 'comments']
+                  'description', 'images', 'menus', 'is_liked', 'created_at', 'updated_at', 'comments' 'notices']
