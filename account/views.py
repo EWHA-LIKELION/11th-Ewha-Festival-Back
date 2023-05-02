@@ -7,8 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import *
 from .serializers import *
-from booth.models import Booth
-from booth.serializers import BoothListSerializer
+from booth.models import *
+from booth.serializers import *
 
 
 class SignUpView(views.APIView):
@@ -60,11 +60,24 @@ class LikedListView(views.APIView):
 
     def get(self, request):
         user = request.user
-        booths = Booth.objects.filter(like=user.id)
+
+        day = request.GET.get('day')
+        college = request.GET.get('college')
+        category = request.GET.get('category')
+
+        params = {'day': day, 'college': college, 'category': category}
+        arguments = {}
+        for key, value in params.items():
+            if value:
+                arguments[key] = value
+
+        booths = (Booth.objects.filter(like=user.id)&(Booth.objects.filter(**arguments))).distinct()
+
         for booth in booths:
             booth.is_liked=True
-            
+        
+        total = booths.__len__()
         serializer = self.serializer_class(booths, many=True)
 
-        return Response({'message': "좋아요한 부스 목록 조회 성공", 'data': serializer.data}, status=HTTP_200_OK)
+        return Response({'message': "좋아요한 부스 목록 조회 성공", 'total': total, 'data': serializer.data}, status=HTTP_200_OK)
 
