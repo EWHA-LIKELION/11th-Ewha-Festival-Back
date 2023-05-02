@@ -67,5 +67,5 @@ class LikedListView(views.APIView):
             
         serializer = self.serializer_class(booths, many=True)
 
-        return Response({'message': "좋아요한 부스 목록 조회 성공", 'total': total, 'data': serializer.data}, status=HTTP_200_OK)
+        return Response({'message': "좋아요한 부스 목록 조회 성공", 'data': serializer.data}, status=HTTP_200_OK)
 
