@@ -74,8 +74,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost:3001',
     'http://127.0.0.1:3000',
-    'https://ewha2023.com',
-    'https://api.ewha2023.com',
+    'https://smilewha2023.com',
+    'https://api.smilewha2023.com',
     'https://2023-ewha-festival.vercel.app'
 ]
 
