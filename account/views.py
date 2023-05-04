@@ -81,3 +81,8 @@ class LikedListView(views.APIView):
 
         return Response({'message': "좋아요한 부스 목록 조회 성공", 'total': total, 'data': serializer.data}, status=HTTP_200_OK)
 
+
+
+class HealthView(views.APIView):
+    def health(request):
+        return Response(status=HTTP_200_OK)
