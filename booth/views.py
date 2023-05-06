@@ -200,7 +200,7 @@ class NoticeDetailView(views.APIView):
         return notice
 
     def patch(self, request, pk, notice_pk):
-        notice = self.get_object(pk=notice_pk)
+        notice = self.get_object(booth_id=pk)
         serializer = self.serializer_class(data=request.data, instance=notice, partial=True)
         
         if serializer.is_valid():
