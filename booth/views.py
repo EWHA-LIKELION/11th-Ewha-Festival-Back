@@ -195,12 +195,12 @@ class NoticeDetailView(views.APIView):
     permission_classes = [IsAuthorOrReadOnly]
 
     def get_object(self, pk):
-        notice = get_object_or_404(Notice, booth_id=pk)
+        notice = get_object_or_404(Notice, pk=pk)
         self.check_object_permissions(self.request, notice.booth)
         return notice
 
-    def patch(self, request, pk):
-        notice = self.get_object(booth_id=pk)
+    def patch(self, request, pk, notice_pk):
+        notice = self.get_object(pk=notice_pk)
         serializer = self.serializer_class(data=request.data, instance=notice, partial=True)
         
         if serializer.is_valid():
