@@ -35,7 +35,7 @@ class BoothListView(views.APIView):
                 arguments[key] = value
 
         booths = Booth.objects.filter(**arguments).annotate(
-                    number_order = Cast(Substr("number", 2), IntegerField())
+                    number_order = Cast(Substr("number", 1), IntegerField())
                 ).order_by("number_order")
         total = booths.__len__()
 
