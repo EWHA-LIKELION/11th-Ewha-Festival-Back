@@ -17,8 +17,11 @@ from .serializers import *
 from .permissions import IsAuthorOrReadOnly
 from .storages import FileUpload, s3_client
 
+class BoothPagination(PageNumberPagination):
+    page_size = 10
 
 class BoothListView(views.APIView):
+    pagination_class = BoothPagination
     serializer_class = BoothListSerializer
 
     def get(self, request):
@@ -38,6 +41,8 @@ class BoothListView(views.APIView):
                     number_order = Cast(Substr("number", 1), IntegerField())
                 ).order_by("number_order")
         total = booths.__len__()
+        total_page = math.ceil(total/10)
+        booths = self.paginate_queryset(booths)
 
         if user:
             for booth in booths:
@@ -45,7 +50,7 @@ class BoothListView(views.APIView):
                     booth.is_liked=True
         
         serializer = self.serializer_class(booths, many=True)
-        return Response({'message': '부스 목록 조회 성공', 'total': total, 'data': serializer.data}, status=HTTP_200_OK)
+        return Response({'message': '부스 목록 조회 성공', 'total': total, 'total_page': total_page, 'data': serializer.data}, status=HTTP_200_OK)
 
 
 class BoothDetailView(views.APIView):
