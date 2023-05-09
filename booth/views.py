@@ -15,12 +15,13 @@ from rest_framework.pagination import PageNumberPagination
 from .models import *
 from .serializers import *
 from .permissions import IsAuthorOrReadOnly
+from .pagination import PaginationHandlerMixin
 from .storages import FileUpload, s3_client
 
 class BoothPagination(PageNumberPagination):
     page_size = 10
 
-class BoothListView(views.APIView):
+class BoothListView(views.APIView, PaginationHandlerMixin):
     pagination_class = BoothPagination
     serializer_class = BoothListSerializer
 
